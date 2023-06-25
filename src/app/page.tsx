@@ -1,6 +1,6 @@
+import Button from "@/components/ui/Button"
 
-export default function Home() {
-  return (
-    <div className='text-gray-900'>Hello chat app here</div>
-  )
+export default async function Home() {
+  return <Button variant='ghost'>Hehe</Button>
+  
 }
