@@ -8,17 +8,17 @@ import { toast } from "react-hot-toast";
 interface pageProps {}
 
 const page: FC<pageProps> = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   async function loginWithGoogle() {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-        // throw new Error('Login failed')
-      await signIn("google");
+      await signIn('google')
     } catch (error) {
-        toast.error('Đã xảy ra sự cố')
+      // display error message to user
+      toast.error('Something went wrong with your login.')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
   }
   return (
