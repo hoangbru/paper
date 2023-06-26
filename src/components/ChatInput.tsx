@@ -17,7 +17,9 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [input, setInput] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const sendMessage = async () => {
+    if(!input) return
     setIsLoading(true);
     try {
       await axios.post("/api/message/send", {

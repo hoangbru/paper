@@ -1,6 +1,8 @@
 import { fetchRedis } from "@/helpers/redis";
 import { authOptions } from "@/libs/auth";
 import { db } from "@/libs/db";
+import { pusherServer } from "@/libs/pusher";
+import { toPusherKey } from "@/libs/utils";
 import { addFriendValidator } from "@/libs/validators/add-friend";
 import { getServerSession } from "next-auth";
 import { z } from 'zod'
@@ -52,6 +54,17 @@ export async function POST(req: Request) {
       }
 
     //   valid request, send friend request
+
+    pusherServer.trigger(
+      toPusherKey(`user:${idToAdd}:incoming_friend_requests`), 
+      'incoming_friend_requests',
+      {
+        senderId: session.user.id,
+        senderEmail: session.user.email,
+        senderName: session.user.name,
+        senderImage: session.user.image,
+      }
+    )
 
     db.sadd(`user:${idToAdd}:incoming_friend_requests`, session.user.id)
     return new Response('Thành công')
