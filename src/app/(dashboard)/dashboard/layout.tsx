@@ -8,6 +8,8 @@ import Image from "next/image";
 import SignOutButton from "@/components/SignOutButton";
 import FriendRequestSidebarOptions from "@/components/FriendRequestSidebarOptions";
 import { fetchRedis } from "@/helpers/redis";
+import { getFriendsByUserId } from "@/helpers/get-friends-by-user-id";
+import SidebarChatList from "@/components/SidebarChatList";
 
 interface LayoutProps {
   children: ReactNode;
@@ -33,6 +35,8 @@ const Layout = async ({ children }: LayoutProps) => {
   const session = await getServerSession(authOptions);
   if (!session) notFound();
 
+  const friends = await getFriendsByUserId(session.user.id);
+
   const unseenRequestCount = (
     (await fetchRedis(
       "smembers",
@@ -46,17 +50,21 @@ const Layout = async ({ children }: LayoutProps) => {
           {/* <Icons.Logo className="h-8 w-auto text-gray-600" /> */}
           <img
             src="/images/logo-black.png"
-            className="h-28 w-auto text-gray-600"
+            className="py-2 h-12 w-auto text-gray-600 order-1"
           />
         </Link>
 
-        <div className="text-base font-semibold leading-6 text-gray-400">
-          Chat
-        </div>
+        {friends.length > 0 ? (
+          <div className="text-base font-semibold leading-6 text-gray-400">
+            Chat
+          </div>
+        ) : null}
 
         <nav className="flex flex-1 flex-col">
           <ul role="list" className="flex flex-1 flex-col gap-y-7">
-            <li>your chat list</li>
+            <li>
+              <SidebarChatList sessionId={session.user.id} friends={friends} />
+            </li>
             <li>
               <div className="text-base font-semibold leading-6 text-gray-400">
                 Tổng quan
@@ -79,14 +87,13 @@ const Layout = async ({ children }: LayoutProps) => {
                     </li>
                   );
                 })}
+                <li>
+                  <FriendRequestSidebarOptions
+                    sessionId={session.user.id}
+                    initialUnseenRequestCount={unseenRequestCount}
+                  />
+                </li>
               </ul>
-            </li>
-
-            <li>
-              <FriendRequestSidebarOptions
-                sessionId={session.user.id}
-                initialUnseenRequestCount={unseenRequestCount}
-              />
             </li>
 
             <li className="-mx-6 mt-auto flex items-center">
@@ -103,7 +110,12 @@ const Layout = async ({ children }: LayoutProps) => {
 
                 <span className="sr-only">Your profile</span>
                 <div className="flex flex-col">
-                  <p aria-hidden="true" className="text-ellipsis overflow-hidden">{session.user.name}</p>
+                  <p
+                    aria-hidden="true"
+                    className="text-ellipsis overflow-hidden"
+                  >
+                    {session.user.name}
+                  </p>
                   <span className="text-xs text-zinc-400" aria-hidden="true">
                     {session.user.email}
                   </span>
@@ -115,7 +127,7 @@ const Layout = async ({ children }: LayoutProps) => {
           </ul>
         </nav>
       </div>
-      <aside className="max-h-screen container pl-4 py-16 md:py-12 w-full">
+      <aside className="max-h-screen container md:py-2 w-full">
         {children}
       </aside>
     </div>

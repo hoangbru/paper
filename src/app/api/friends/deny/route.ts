@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions);
     const { id: idToDeny } = z.object({ id: z.string() }).parse(body);
     if (!session) {
-      return new Response("Không được ủy quyền", { status: 401 });
+      return new Response("Lỗi xác thực", { status: 401 });
     }
 
     await db.srem(`user:${session.user.id}:incoming_friend_requests`, idToDeny);

@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     const { id: idToAdd } = z.object({ id: z.string() }).parse(body);
     const session = await getServerSession(authOptions);
     if (!session) {
-      return new Response("Không được ủy quyền", { status: 401 });
+      return new Response("Lỗi xác thực", { status: 401 });
     }
 
     // verify both users are not already friends

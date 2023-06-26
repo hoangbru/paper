@@ -21,12 +21,14 @@ const page = async () => {
       return {
         senderId,
         senderEmail: senderParsed.email,
+        senderName: senderParsed.name,
+        senderImage: senderParsed.image,
       };
     })
   );
   return (
-    <main className="pt-8">
-      <h1 className="font-bold text-3xl mb-8">Yêu cầu kết bạn</h1>
+    <main className="pt-8 pl-4">
+      <h1 className="font-bold text-3xl mb-8">Lời mời kết bạn</h1>
       <div className="flex flex-col gap-4">
         <FriendRequests
           incomingFriendRequests={incomingFriendRequests}

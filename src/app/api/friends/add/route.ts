@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions);
 
     if (!session) {
-      return new Response("Không được ủy quyền", { status: 401 });
+      return new Response("Lỗi xác thực", { status: 401 });
     }
 
     if (idToAdd === session.user.id) {

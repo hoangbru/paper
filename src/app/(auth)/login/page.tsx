@@ -4,21 +4,22 @@ import Button from "@/components/ui/Button";
 import { FC, useState } from "react";
 import { signIn } from "next-auth/react";
 import { toast } from "react-hot-toast";
+import { Heading5Icon } from "lucide-react";
 
 interface pageProps {}
 
 const page: FC<pageProps> = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   async function loginWithGoogle() {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      await signIn('google')
+      await signIn("google");
     } catch (error) {
       // display error message to user
-      toast.error('Something went wrong with your login.')
+      toast.error("Something went wrong with your login.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
   return (
@@ -27,14 +28,22 @@ const page: FC<pageProps> = () => {
         <div className="w-full flex flex-col items-center max-w-md space-y-8">
           <div className="flex flex-col items-center gap-8">
             <img
-              src="/images/logo-black.png"
+              src="/images/logo-left.png"
               alt="logo"
-              width={120}
-              height={120}
+              width={100}
+              height={100}
             />
-            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+            <div className="mb-8 flex flex-col items-center gap-2">
+              <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900">
+                Welcome to paper !
+              </h2>
+              <div className="text-gray-500 text-base">
+                Để ngoại tình mà không bị phát hiện, hãy bắt đầu ngay
+              </div>
+            </div>
+            <h5 className="mt-8 text-center text-xl font-bold tracking-tight text-gray-900">
               Sign in to your account
-            </h2>
+            </h5>
           </div>
 
           <Button
