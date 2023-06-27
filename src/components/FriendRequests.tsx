@@ -93,7 +93,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
       ) : (
         friendRequests.map((request) => (
           <div key={request.senderId} className="flex gap-4 items-center">
-            <UserPlus className="text-black" />
+            <UserPlus className="text-black hidden" />
             <div className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900">
               <div className="relative h-8 w-8 bg-gray-50">
                 <Image
