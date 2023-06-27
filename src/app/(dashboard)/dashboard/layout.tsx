@@ -1,62 +1,76 @@
+import { Icon, Icons } from "@/components/Icons";
+import SignOutButton from "@/components/SignOutButton";
 import { authOptions } from "@/libs/auth";
 import { getServerSession } from "next-auth";
-import { notFound } from "next/navigation";
-import { FC, ReactNode } from "react";
-import Link from "next/link";
-import { Icon, Icons } from "@/components/Icons";
 import Image from "next/image";
-import SignOutButton from "@/components/SignOutButton";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { FC, ReactNode, useState } from "react";
 import FriendRequestSidebarOptions from "@/components/FriendRequestSidebarOptions";
 import { fetchRedis } from "@/helpers/redis";
 import { getFriendsByUserId } from "@/helpers/get-friends-by-user-id";
 import SidebarChatList from "@/components/SidebarChatList";
+import MobileChatLayout from "@/components/MobileChatLayout";
+import { SidebarOption } from "@/types/typings";
+import { toast } from "react-hot-toast";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
-interface SidebarOption {
-  id: number;
-  name: string;
-  href: string;
-  Icon: Icon;
-}
+// Done after the video and optional: add page metadata
+export const metadata = {
+  title: "Paper",
+};
 
 const sidebarOptions: SidebarOption[] = [
   {
     id: 1,
-    name: "Thêm bạn bè",
+    name: "Thêm bạn mới",
     href: "/dashboard/add",
     Icon: "UserPlus",
   },
 ];
 
 const Layout = async ({ children }: LayoutProps) => {
-  const session = await getServerSession(authOptions);
-  if (!session) notFound();
+    const session = await getServerSession(authOptions);
+    if (!session) notFound();
 
-  const friends = await getFriendsByUserId(session.user.id);
+    const friends = await getFriendsByUserId(session.user.id);
 
-  const unseenRequestCount = (
-    (await fetchRedis(
-      "smembers",
-      `user:${session.user.id}:incoming_friend_requests`
-    )) as User[]
-  ).length;
+    const unseenRequestCount = (
+      (await fetchRedis(
+        "smembers",
+        `user:${session.user.id}:incoming_friend_requests`
+      )) as User[]
+    ).length;
+
   return (
     <div className="w-full flex h-screen">
-      <div className="flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
+      <div className="md:hidden">
+        <MobileChatLayout
+          friends={friends}
+          session={session}
+          sidebarOptions={sidebarOptions}
+          unseenRequestCount={unseenRequestCount}
+        />
+      </div>
+      <div className="hidden md:flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
         <Link href="/dashboard" className="flex h-16 shrink-0 items-center">
           {/* <Icons.Logo className="h-8 w-auto text-gray-600" /> */}
-          <img
+          <Image
+            referrerPolicy="no-referrer"
+            alt="logo"
             src="/images/logo-black.png"
+            width={20}
+            height={20}
             className="py-2 h-12 w-auto text-gray-600 order-1"
           />
         </Link>
 
         {friends.length > 0 ? (
           <div className="text-base font-semibold leading-6 text-gray-400">
-            Chat
+            Bạn bè
           </div>
         ) : null}
 
@@ -127,7 +141,7 @@ const Layout = async ({ children }: LayoutProps) => {
           </ul>
         </nav>
       </div>
-      <aside className="max-h-screen container md:py-2 w-full">
+      <aside className="max-h-screen container py-16 md:py-2 w-full">
         {children}
       </aside>
     </div>

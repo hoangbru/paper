@@ -1,4 +1,4 @@
-import { chatHrefContructor, cn } from "@/libs/utils"
+import { chatHrefConstructor, cn } from "@/libs/utils"
 import Image from 'next/image'
 import { FC } from 'react'
 import { toast, type Toast } from 'react-hot-toast'
@@ -29,7 +29,7 @@ const UnseenChatToast: FC<UnseenChatToastProps> = ({
     >
       <a
         onClick={() => toast.dismiss(t.id)}
-        href={`/dashboard/chat/${chatHrefContructor(sessionId, senderId)}`}
+        href={`/dashboard/chat/${chatHrefConstructor(sessionId, senderId)}`}
         className="flex-1 w-0 p-4"
       >
         <div className="flex items-start">

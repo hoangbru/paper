@@ -5,10 +5,9 @@ import { FC, useState } from "react";
 import { signIn } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import { Heading5Icon } from "lucide-react";
+import Image from "next/image";
 
-interface pageProps {}
-
-const page: FC<pageProps> = () => {
+const Page: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   async function loginWithGoogle() {
@@ -27,7 +26,7 @@ const page: FC<pageProps> = () => {
       <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full flex flex-col items-center max-w-md space-y-8">
           <div className="flex flex-col items-center gap-8">
-            <img
+            <Image
               src="/images/logo-left.png"
               alt="logo"
               width={100}
@@ -38,7 +37,7 @@ const page: FC<pageProps> = () => {
                 Welcome to paper !
               </h2>
               <div className="text-gray-500 text-base">
-                Để ngoại tình mà không bị phát hiện, hãy bắt đầu ngay
+                Kết nối để trò chuyện với bạn bè, hãy bắt đầu ngay
               </div>
             </div>
             <h5 className="mt-8 text-center text-xl font-bold tracking-tight text-gray-900">
@@ -90,4 +89,4 @@ const page: FC<pageProps> = () => {
   );
 };
 
-export default page;
+export default Page;
