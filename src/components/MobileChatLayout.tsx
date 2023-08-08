@@ -31,7 +31,7 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({ friends, session, sidebar
   }, [pathname])
 
   return (
-    <div className='fixed bg-zinc-50 border-b border-zinc-200 top-0 inset-x-0 py-2 px-4'>
+    <div className='fixed z-50 bg-zinc-50 border-b border-zinc-200 top-0 inset-x-0 py-2 px-4'>
       <div className='w-full flex justify-between items-center'>
         <Link
           href='/dashboard'
@@ -51,7 +51,7 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({ friends, session, sidebar
         </Button>
       </div>
       <Transition.Root show={open} as={Fragment}>
-        <Dialog as='div' className='relative z-10' onClose={setOpen}>
+        <Dialog as='div' className='relative z-50' onClose={setOpen}>
           <div className='fixed inset-0' />
 
           <div className='fixed inset-0 overflow-hidden'>
